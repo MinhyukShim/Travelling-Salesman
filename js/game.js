@@ -3,7 +3,7 @@ var ctx = canvas.getContext("2d");
 
 var rect = canvas.getBoundingClientRect();
 
-var nodes_amount = 20;
+var nodes_amount = 25;
 var padding_border = 25;
 var nodes;
 var edges;
@@ -47,8 +47,7 @@ function init(){
     }
 
 
-    distance = nearest(nodes)
-    console.log(distance)
+
     render();
 }
 
@@ -58,9 +57,29 @@ function render(){
     for (var i =0; i<nodes_amount; i++){
         node = nodes[i];
         ctx.beginPath();
-        ctx.arc(node.x,node.y, 5, 0, 2 * Math.PI, false);
+        ctx.arc(node.x,node.y, 6, 0, 2 * Math.PI, false);
+        if(i==0){
+            ctx.fillStyle = "blue";
+        }
+        else{
+            ctx.fillStyle = "Black"; 
+        }
         ctx.fill();
     }
+
+    
+
+}
+
+
+function nearest_click(){
+    distance = nearest(nodes);
+
+    draw_edges();
+}
+
+
+function draw_edges(){
     for (var i =0; i<edges.length; i++){
         edge = edges[i]
         ctx.beginPath();
@@ -68,8 +87,6 @@ function render(){
         ctx.lineTo(edge.nodes[1].x, edge.nodes[1].y);
         ctx.stroke();
     }
-    
-
 }
 
 
