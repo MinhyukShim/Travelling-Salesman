@@ -24,3 +24,6 @@ function returnCount(board,x,y){
     }
     return count;
 }
+
+
+
