@@ -1,3 +1,3 @@
-Play with Conway's Game of life [here](https://minhyukshim.github.io/GOL/).
+Travelling salesman problem [here](https://minhyukshim.github.io/GOL/).
 
-https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+https://en.wikipedia.org/wiki/Travelling_salesman_problem
