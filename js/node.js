@@ -1,9 +1,10 @@
 class Node{
 
-    constructor(x,y){
+    constructor(x,y,number){
         this.x = x;
         this.y = y;
         this.degree = 0;
+        this.number = number;
 
     }
 

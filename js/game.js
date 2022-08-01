@@ -43,12 +43,13 @@ function init(){
     
     for (var i =0; i<nodes_amount; i++){
         xy = generate_x_y();
-        nodes[i] = new Node(xy[0] ,xy[1]);
+        nodes[i] = new Node(xy[0] ,xy[1],i);
     }
 
 
 
     render();
+
 }
 
 
@@ -74,30 +75,48 @@ function render(){
 
 function nearest_click(){
     distance = nearest(nodes);
-
-    draw_edges();
+    console.log(distance)
+    draw_edges(distance);
 }
 
 
-function draw_edges(){
+function genetic_click(){
+    result = genetic(nodes);
+    best = result[0];
+    edges = best[0]
+    console.log(result[1])
+    draw_edges_gen(best[1]);
+}
+
+function draw_edges_gen(distance){
+    render()
+    for (var i =0; i<edges.length-1; i++){
+        edge = edges[i];
+        ctx.beginPath();
+        ctx.moveTo(edges[i].x,edges[i].y);
+        ctx.lineTo(edges[i+1].x, edges[i+1].y);
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+    }
+    ctx.font = '32px serif';
+    ctx.fillText("Genetic Distance: " + Math.floor(distance), 10, 40);
+}
+
+function draw_edges(distance){
+    render()
     for (var i =0; i<edges.length; i++){
-        edge = edges[i]
+        edge = edges[i];
         ctx.beginPath();
         ctx.moveTo(edge.nodes[0].x,edge.nodes[0].y);
         ctx.lineTo(edge.nodes[1].x, edge.nodes[1].y);
+        ctx.lineWidth = 1.5;
         ctx.stroke();
     }
+    ctx.font = '32px serif';
+    ctx.fillText("NN Distance: " + Math.floor(distance), 10, 40);
 }
 
 
-function all_2_degrees(nodes){
-    for (var i =0; i<nodes_amount; i++){
-        if(nodes[i].degree!=2){
-            return false;
-        }
-    }
-    return true
-}
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
@@ -108,15 +127,15 @@ function sleep(milliseconds) {
 
 
 function nearest(nodes){
-    total_dist = 0
+    total_dist = 0;
     edges = createArray(nodes_amount);
-    cur_i = 0
+    cur_i = 0;
     nodes_copy = [];
 
     for (i = 0; i < nodes.length; i++) {
         nodes_copy[i] = nodes[i];
     }
-    current_node = nodes_copy[0]
+    current_node = nodes_copy[0];
     
     while(nodes_copy.length!=1){
 
@@ -142,13 +161,28 @@ function nearest(nodes){
 
         //update current node to the new node
         current_node=connecting_node;
-        total_dist+= min_dist
+        total_dist+= min_dist;
     }
 
     //connect the last node.
     edges[cur_i++] = new Edge(current_node, nodes[0], current_node.distance(nodes[0]));
-    return total_dist
+    total_dist += current_node.distance(nodes[0]);
+    return total_dist;
 
 
 
+}
+
+
+
+function render_gen_edges(edges){
+    for (var i =0; i<edges.length-1; i++){
+        edge = edges[i];
+        edge_b = edges[i+1];
+        ctx.beginPath();
+        ctx.moveTo(edge.x,edge.y);
+        ctx.lineTo(edge_b.x, edge_b.y);
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+    }
 }
