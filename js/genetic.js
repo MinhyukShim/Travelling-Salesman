@@ -35,9 +35,12 @@ function breed(edges_a,edges_b){
     for (var i = 0; i < edges_a.length-2; i++) {
         edges_left[i] = edges_a[i+1];
     } 
-
+    var which = 0;
     for(var i=1; i<edges_a.length-1;i++){
-        which = Math.random();
+
+        if((i-1)%3==0){
+            which = Math.random();
+        }
         found = false;
         if(which<0.5){
             if(edges_left.includes(edges_a[i])){
@@ -95,12 +98,13 @@ function calc_dist(edges_in){
 
 
 function mutate(edges_in){
-    max_swaps = 15
+    max_swaps = 10
     swaps = Math.floor(Math.pow(Math.random(), 3)*max_swaps)+1;
     for(var i = 0; i <swaps; i++){
-        edge_a = Math.floor(Math.random() *(edges_in.length-2)) + 1;
-        edge_b = Math.floor(Math.random() *(edges_in.length-2)) + 1;
+        edge_a = Math.floor(Math.random() *(edges_in.length-3)) + 1;
+        edge_b = Math.floor(Math.random() *(edges_in.length-3)) + 1;
         [edges_in[edge_a], edges_in[edge_b]] = [edges_in[edge_b], edges_in[edge_a]];
+        [edges_in[edge_a+1], edges_in[edge_b+1]] = [edges_in[edge_b+1], edges_in[edge_a+1]];
     }
 
     new_dist = calc_dist(edges_in)
@@ -111,11 +115,11 @@ function genetic(nodes){
     total_dist = 0;
      
 
-    generations = 250
-    candidates = 5000
+    generations = 50
+    candidates = 20000
     mutation_rate = 50
-    keep_rate = 3000
-    non_mutate = 15
+    keep_rate = 16000
+    non_mutate = 10
 
     snapshot_amount = 50
     snapshot_i = 0;
@@ -136,8 +140,8 @@ function genetic(nodes){
         for (var j =0; j<keep_rate; j ++){
            
             if(j>=non_mutate ){
-                cand_a =Math.floor(Math.pow(Math.random(), 5)*candidates)
-                cand_b =Math.floor(Math.pow(Math.random(), 5)*candidates)
+                cand_a =Math.floor(Math.pow(Math.random(), 5)*Math.floor(candidates/4))
+                cand_b =Math.floor(Math.pow(Math.random(), 5)*Math.floor(candidates/4))
                 new_edges[j] = breed(all_edges[cand_a][0],all_edges[cand_b][0])
                 if(Math.floor(Math.random() * 100)<mutation_rate){
                    new_edges[j] = mutate(new_edges[j][0])
